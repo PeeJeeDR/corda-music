@@ -21,11 +21,15 @@ class _MusicPageState extends State<MusicPage> {
 
   setMusic() async {
     var dir = await getExternalStorageDirectory();
-    String path = dir != null ? dir.path : '';
+    var musicDir = Directory(dir != null ? '${dir.path}/music' : '');
 
-    setState(() {
-      _music = Directory(path.toString()).listSync();
-    });
+    if (await musicDir.exists()) {
+      var path = musicDir.path;
+
+      setState(() {
+        _music = Directory(path.toString()).listSync();
+      });
+    }
   }
 
   onMusicTap(song) {
