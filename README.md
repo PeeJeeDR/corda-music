@@ -1,4 +1,4 @@
-# corda_music
+# Corda Music
 
 A Flutter app for downloading and playing audio from Youtube.
 
