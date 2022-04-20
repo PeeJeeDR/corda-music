@@ -33,13 +33,10 @@ class _MusicPageState extends State<MusicPage> {
   }
 
   onMusicTap(song) {
-    print('song $song');
-
     player.setFilePath(song.path);
     player.play();
 
     player.playerStateStream.listen((state) {
-      print('state ${state.playing}');
       setState(() {
         _playing = state.playing;
       });

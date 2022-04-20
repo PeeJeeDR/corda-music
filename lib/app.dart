@@ -1,4 +1,4 @@
-import 'package:corda_music/pages/home_page.dart';
+import 'package:corda_music/pages/search_page.dart';
 import 'package:corda_music/pages/music_page.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _selectedPage = 1;
+  var _selectedPage = 0;
 
   var pages = [
     const MyHomePage(title: 'Zoeken'),
