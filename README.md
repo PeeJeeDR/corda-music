@@ -1,17 +1,17 @@
-# corda_music
+# Corda Music
 
 A Flutter app for downloading and playing audio from Youtube.
 
 ## Status
 
-- Currently only for Android.
+Currently only for Android.
 
-[x] Download music
-[x] Play/pause music
-[ ] Search for music
-[ ] Audio player
-[ ] Add meta to audio file on download
-[ ] Audio controls on Android notification drawer and lock screen
-[ ] Audio artwork
-[ ] Styling
-[ ] Set current time of playing audio file
+- [x] Download music
+- [x] Play/pause music
+- [ ] Search for music
+- [ ] Audio player
+- [ ] Add meta to audio file on download
+- [ ] Audio controls on Android notification drawer and lock screen
+- [ ] Audio artwork
+- [ ] Styling
+- [ ] Set current time of playing audio file
