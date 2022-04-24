@@ -1,7 +1,8 @@
 import 'dart:async';
-
+import 'package:corda_music/services/counter.dart';
 import 'package:flutter/material.dart';
 import 'package:corda_music/services/youtube_downloader.dart';
+import 'package:get_it/get_it.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 
@@ -15,6 +16,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final CounterService counterService = GetIt.instance.get<CounterService>();
+
   final _yt = YoutubeExplode();
   String searchQuery = 'George Ezra';
 
@@ -51,12 +54,29 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.all(15),
         child: Column(
           children: [
+            StreamBuilder(
+              stream: counterService.stream$,
+              builder: (context, snap) {
+                return FloatingActionButton(
+                  onPressed: () => counterService.inrement(),
+                  child: Text('${snap.data}'),
+                );
+              },
+            ),
+            FloatingActionButton(onPressed: () => counterService.inrement()),
+            StreamBuilder(
+              stream: counterService.stream$,
+              builder: (context, snap) {
+                return Text('${snap.data}');
+              },
+            ),
             Container(
               margin: const EdgeInsets.only(bottom: 15),
               child: TextField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Search for music',
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText:
+                      'Search for music ${counterService.current.toString()}',
                 ),
                 onChanged: _onSearchChanged,
               ),

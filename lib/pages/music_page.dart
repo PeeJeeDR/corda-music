@@ -1,9 +1,11 @@
 import 'dart:io';
-
-import 'package:corda_music/services/audio_handler.dart';
+import 'package:corda_music/services/audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path_provider/path_provider.dart';
+
+const String noSongs = 'You have no songs yet.';
+const String errorSongs = 'Something went wrong while fetching your songs.';
 
 class MusicPage extends StatefulWidget {
   const MusicPage({Key? key, required this.title}) : super(key: key);
@@ -15,22 +17,9 @@ class MusicPage extends StatefulWidget {
 }
 
 class _MusicPageState extends State<MusicPage> {
-  var _music = [];
+  final AudioService audioService = GetIt.instance.get<AudioService>();
   final player = AudioPlayer();
   var _playing = false;
-
-  setMusic() async {
-    var dir = await getExternalStorageDirectory();
-    var musicDir = Directory(dir != null ? '${dir.path}/music' : '');
-
-    if (await musicDir.exists()) {
-      var path = musicDir.path;
-
-      setState(() {
-        _music = Directory(path.toString()).listSync();
-      });
-    }
-  }
 
   onMusicTap(song) {
     player.setFilePath(song.path);
@@ -54,7 +43,8 @@ class _MusicPageState extends State<MusicPage> {
   @override
   void initState() {
     super.initState();
-    setMusic();
+
+    audioService.getMusic();
   }
 
   @override
@@ -66,19 +56,40 @@ class _MusicPageState extends State<MusicPage> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: _music.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_music[index]
-                      .path
-                      .toString()
-                      .split('/')
-                      .last
-                      .split('.mp3')
-                      .first),
-                  onTap: () => onMusicTap(_music[index]),
-                );
+            child: StreamBuilder(
+              stream: audioService.songsStream$,
+              builder: (context, AsyncSnapshot<Object?> snap) {
+                if (snap.connectionState == ConnectionState.active) {
+                  List data = snap.data as List<FileSystemEntity>;
+
+                  if (data.isNotEmpty) {
+                    return ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(data[index]
+                              .path
+                              .toString()
+                              .split('/')
+                              .last
+                              .split('.mp3')
+                              .first),
+                          onTap: () => onMusicTap(data[index]),
+                        );
+                      },
+                    );
+                  }
+
+                  if (data.isEmpty) {
+                    return const Text(noSongs);
+                  }
+                }
+
+                if (snap.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
+
+                return const Text(errorSongs);
               },
             ),
           ),
