@@ -8,7 +8,7 @@ Currently only for Android.
 
 - [x] Download music
 - [x] Play/pause music
-- [ ] Search for music
+- [x] Search for music
 - [ ] Audio player
 - [ ] Add meta to audio file on download
 - [ ] Audio controls on Android notification drawer and lock screen
