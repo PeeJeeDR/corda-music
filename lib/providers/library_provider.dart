@@ -15,16 +15,17 @@ class StateModel {
 class LibraryNotifier extends StateNotifier<StateModel> {
   LibraryNotifier() : super(StateModel(songs: []));
 
-  Future<List<FileSystemEntity>> getSongs() async {
+  void getSongs() async {
     var dir = await getExternalStorageDirectory();
     var musicDir = Directory(dir != null ? '${dir.path}/music' : '');
 
     if (await musicDir.exists()) {
       var path = musicDir.path;
-      return Directory(path.toString()).listSync();
-    }
 
-    return [];
+      state = state.copyWith(
+        songs: Directory(path.toString()).listSync(),
+      );
+    }
   }
 }
 

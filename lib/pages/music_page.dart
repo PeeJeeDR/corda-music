@@ -1,3 +1,4 @@
+import 'package:corda_music/providers/library_provider.dart';
 import 'package:corda_music/providers/songs_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,8 +17,15 @@ class MusicPage extends ConsumerStatefulWidget {
 
 class _MusicPageState extends ConsumerState<MusicPage> {
   @override
+  void initState() {
+    super.initState();
+
+    ref.read(libraryProvider.notifier).getSongs();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final songs = ref.watch(songsProvider);
+    final songs = ref.watch(libraryProvider).songs;
 
     return Scaffold(
       appBar: AppBar(
@@ -25,31 +33,25 @@ class _MusicPageState extends ConsumerState<MusicPage> {
       ),
       body: Column(
         children: [
-          songs.when(
-            data: (songs) {
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: songs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                        songs[index]
-                            .path
-                            .toString()
-                            .split('/')
-                            .last
-                            .split('.mp3')
-                            .first,
-                      ),
-                      onTap: () => print('Helloo'),
-                    );
-                  },
-                ),
-              );
-            },
-            error: (err, stack) => Text('error: $err'),
-            loading: () => const CircularProgressIndicator(),
-          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: songs.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    songs[index]
+                        .path
+                        .toString()
+                        .split('/')
+                        .last
+                        .split('.mp3')
+                        .first,
+                  ),
+                  onTap: () => print('Helloo'),
+                );
+              },
+            ),
+          )
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:corda_music/providers/library_provider.dart';
 import 'package:corda_music/providers/songs_provider.dart';
 import 'package:corda_music/services/youtube_downloader.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,8 @@ class _MusicTileState extends ConsumerState<MusicTile> {
         _loading = false;
       });
 
-      print('READ SONGS PROVIDER');
-      ref.read(songsProvider);
+      ref.read(libraryProvider.notifier).getSongs();
+      print('GET SONGS');
     });
   }
 
