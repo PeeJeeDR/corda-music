@@ -1,23 +1,21 @@
 import 'dart:async';
-import 'package:corda_music/services/counter.dart';
+import 'package:corda_music/widgets/music_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:corda_music/services/youtube_downloader.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class SearchPage extends ConsumerStatefulWidget {
+  const SearchPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final CounterService counterService = GetIt.instance.get<CounterService>();
-
+class _SearchPageState extends ConsumerState<SearchPage> {
   final _yt = YoutubeExplode();
   String searchQuery = 'George Ezra';
 
@@ -48,39 +46,34 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        toolbarHeight: 70,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top + 15,
+            left: 10,
+            right: 10,
+            bottom: 0,
+          ),
+          child: TextField(
+            decoration: InputDecoration(
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide.none,
+              ),
+              labelText: 'Search for music',
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+            ),
+            onChanged: _onSearchChanged,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
           children: [
-            StreamBuilder(
-              stream: counterService.stream$,
-              builder: (context, snap) {
-                return FloatingActionButton(
-                  onPressed: () => counterService.inrement(),
-                  child: Text('${snap.data}'),
-                );
-              },
-            ),
-            FloatingActionButton(onPressed: () => counterService.inrement()),
-            StreamBuilder(
-              stream: counterService.stream$,
-              builder: (context, snap) {
-                return Text('${snap.data}');
-              },
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 15),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText:
-                      'Search for music ${counterService.current.toString()}',
-                ),
-                onChanged: _onSearchChanged,
-              ),
-            ),
             Expanded(
               child: FutureBuilder(
                 future: _getVideos(),
@@ -101,17 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     shrinkWrap: true,
                     itemCount: snapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        contentPadding:
-                            const EdgeInsets.only(top: 5, bottom: 5),
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Image.network(
-                              snapshot.data[index].thumbnails.lowResUrl),
-                        ),
-                        title: Text(snapshot.data[index].title),
-                        onTap: () => onVideoPress(snapshot.data[index]),
-                      );
+                      return MusicTile(song: snapshot.data[index]);
                     },
                   );
                 },

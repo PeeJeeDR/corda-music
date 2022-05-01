@@ -37,13 +37,13 @@ dependencies:
   youtube_explode_dart: ^1.11.0
   path_provider: ^2.0.9
   audiotagger: ^2.2.1
-  flutter_media_metadata: ^1.0.0+1
   flutter_ffmpeg: ^0.4.2
   just_audio: ^0.9.20
   audio_service: ^0.18.4
   easy_debounce: ^2.0.2+1
-  rxdart: ^0.27.3
   get_it: ^7.2.0
+  equatable: ^2.0.3
+  flutter_riverpod: ^1.0.3
 
 dev_dependencies:
   flutter_test:
