@@ -1,6 +1,7 @@
 import 'package:corda_music/providers/library_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
 
 const String noSongs = 'You have no songs yet.';
 const String errorSongs = 'Something went wrong while fetching your songs.';
@@ -15,11 +16,18 @@ class MusicPage extends ConsumerStatefulWidget {
 }
 
 class _MusicPageState extends ConsumerState<MusicPage> {
+  var player = AudioPlayer();
+
   @override
   void initState() {
     super.initState();
 
     ref.read(libraryProvider.notifier).getSongs();
+  }
+
+  void onAudioClick(audio) async {
+    print('player $player');
+    await player.play();
   }
 
   @override
@@ -46,7 +54,7 @@ class _MusicPageState extends ConsumerState<MusicPage> {
                         .split('.mp3')
                         .first,
                   ),
-                  onTap: () => print('Helloo'),
+                  onTap: () => onAudioClick(songs[index]),
                 );
               },
             ),

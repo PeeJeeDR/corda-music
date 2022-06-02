@@ -34,8 +34,6 @@ class YoutubeDownloader {
     await fileStream.flush();
     await fileStream.close();
 
-    print('File saved');
-
     // Convert mka to mp3.
     var arguments = ['-i', '$path/$fileName.mka', '$path/$fileName.mp3'];
     await ffmpeg.executeWithArguments(arguments);
@@ -47,7 +45,5 @@ class YoutubeDownloader {
       path: '$path/$fileName.mp3',
       tags: {'title': fileName},
     );
-
-    print('File downloaded');
   }
 }

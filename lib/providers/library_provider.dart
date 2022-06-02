@@ -21,9 +21,10 @@ class LibraryNotifier extends StateNotifier<StateModel> {
 
     if (await musicDir.exists()) {
       var path = musicDir.path;
+      var songs = Directory(path.toString()).listSync();
 
       state = state.copyWith(
-        songs: Directory(path.toString()).listSync(),
+        songs: songs,
       );
     }
   }
