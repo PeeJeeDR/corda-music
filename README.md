@@ -1,17 +1,16 @@
-# Corda Music
+# corda_music
 
-A Flutter app for downloading and playing audio from Youtube.
+A new Flutter project.
 
-## Status
+## Getting Started
 
-Currently only for Android.
+This project is a starting point for a Flutter application.
 
-- [x] Download music
-- [x] Play/pause music
-- [x] Search for music
-- [ ] Audio player
-- [ ] Add meta to audio file on download
-- [ ] Audio controls on Android notification drawer and lock screen
-- [ ] Audio artwork
-- [ ] Styling
-- [ ] Set current time of playing audio file
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
