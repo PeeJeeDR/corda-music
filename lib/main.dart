@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:corda_music/handlers/my_audio_handler.dart';
 import 'package:corda_music/services/counter_service.dart';
 import 'package:corda_music/services/page_service.dart';
+import 'package:corda_music/services/search_service.dart';
 import 'package:corda_music/widgets/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
 
   getIt.registerSingleton<Counter>(Counter());
   getIt.registerSingleton<PageService>(PageService());
+  getIt.registerSingleton<SearchService>(SearchService());
 
   runApp(MyApp());
 }
@@ -34,9 +36,8 @@ class MyApp extends StatelessWidget {
       stream: pageService.selectedPage$,
       builder: (context, snap) {
         return MaterialApp(
-          title: 'Flutter Demo',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.purple,
           ),
           home: Scaffold(
             body: pageService.pages.elementAt(pageService.selectedPage),

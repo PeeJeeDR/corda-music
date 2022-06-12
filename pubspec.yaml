@@ -38,6 +38,8 @@ dependencies:
   just_audio: ^0.9.24
   get_it: ^7.2.0
   rxdart: ^0.27.4
+  youtube_explode_dart: ^1.11.0
+  path_provider: ^2.0.10
 
 dev_dependencies:
   flutter_test:

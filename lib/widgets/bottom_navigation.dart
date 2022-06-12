@@ -13,14 +13,18 @@ class BottomNavigation extends StatelessWidget {
       stream: pageService.selectedPage$,
       builder: (context, snap) {
         return BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(Icons.search),
               label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.music_note),
-              label: 'Music',
+              icon: Icon(
+                pageService.selectedPage == 1
+                    ? Icons.library_music
+                    : Icons.library_music_outlined,
+              ),
+              label: 'Library',
             ),
           ],
           currentIndex: pageService.selectedPage,
