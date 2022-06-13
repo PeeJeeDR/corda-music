@@ -1,4 +1,5 @@
 import 'package:corda_music/handlers/my_audio_handler.dart';
+import 'package:corda_music/handlers/player_manager.dart';
 import 'package:corda_music/main.dart';
 import 'package:corda_music/services/library_service.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,9 @@ class LibraryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final libraryService = getIt.get<LibraryService>();
-    final audioHandler = getIt.get<MyAudioHandler>();
+    final playerManager = getIt.get<PlayerManager>();
 
-    libraryService.getLibrary(false);
+    libraryService.getLibrary();
 
     return StreamBuilder(
       stream: libraryService.library.stream,
@@ -23,8 +24,8 @@ class LibraryPage extends StatelessWidget {
           itemBuilder: (ctx, index) {
             return TextButton(
               child: Text(library[index].path),
-              onPressed: () => {
-                audioHandler.onSongClick(index),
+              onPressed: () {
+                playerManager.onSongClick(index);
               },
             );
           },
