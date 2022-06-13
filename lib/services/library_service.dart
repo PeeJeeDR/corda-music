@@ -9,7 +9,7 @@ class LibraryService {
 
   get library => _library;
 
-  getLibrary() async {
+  getLibrary(loadQueue) async {
     final audioHandler = getIt.get<MyAudioHandler>();
 
     var dir = await getExternalStorageDirectory();
@@ -18,7 +18,10 @@ class LibraryService {
     if (await musicDir.exists()) {
       var path = musicDir.path;
       _library.add(Directory(path.toString()).listSync());
-      audioHandler.loadQueue(library.value);
+
+      if (loadQueue) {
+        audioHandler.loadQueue(library.value);
+      }
     }
   }
 }

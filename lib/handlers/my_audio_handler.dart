@@ -22,8 +22,13 @@ class MyAudioHandler extends BaseAudioHandler {
   Future<void> loadQueue(List library) async {
     final mediaItems = library
         .map((song) => MediaItem(
-              id: 'test',
+              id: song.path,
+              album: 'Album name',
               title: 'test',
+              displayTitle: 'Jooow',
+              rating: Rating.newStarRating(RatingStyle.range5stars, 4),
+              artist: 'Sigrid',
+              duration: const Duration(microseconds: 345432),
               extras: {
                 'filePath': song.path,
               },
@@ -33,14 +38,34 @@ class MyAudioHandler extends BaseAudioHandler {
     addQueueItems(mediaItems);
   }
 
+  // THIS FUNCTION NEEDS REWORK.
+  onNewFileDownload(file) async {
+    print('ON NEW FILE DOWNLOAD!!! $file');
+
+    var item = MediaItem(id: file.path ?? '', title: 'Hoi', extras: {
+      'filePath': file.path,
+    });
+
+    print('ITEEEEEM $item');
+
+    addQueueItem(item);
+  }
+
   onSongClick(index) async {
     _player.seek(null, index: index);
+
+    playbackState.add(PlaybackState(controls: [
+      MediaControl.skipToPrevious,
+      MediaControl.pause,
+      MediaControl.stop,
+      MediaControl.skipToNext,
+    ]));
+
     play();
   }
 
   @override
   Future<void> addQueueItems(List<MediaItem> mediaItems) async {
-    print('ADD QUEUE ITEMS!');
     // manage Just Audio
     final audioSource = mediaItems.map((mediaItem) {
       return AudioSource.uri(Uri.file(mediaItem.extras!['filePath']));
@@ -48,15 +73,22 @@ class MyAudioHandler extends BaseAudioHandler {
     _playlist.addAll(audioSource.toList());
     _player.setAudioSource(_playlist);
 
+    print('Media itemsssss $mediaItems');
+
     // notify system
-    final newQueue = queue.value..addAll(mediaItems);
-    queue.add(newQueue);
+    // final newQueue = queue.value..addAll(mediaItems);
+    // queue.add(newQueue);
+
+    queue.add(mediaItems);
 
     print('queue $queue');
   }
 
   void notifyAudioHandlerAboutPlaybackEvents() {
+    print('NOTIFY!!');
     _player.playbackEventStream.listen((PlaybackEvent event) {
+      print('STATE CHANGED! $event');
+
       final playing = _player.playing;
       playbackState.add(playbackState.value.copyWith(
         controls: [
@@ -82,25 +114,26 @@ class MyAudioHandler extends BaseAudioHandler {
         speed: _player.speed,
         queueIndex: event.currentIndex,
       ));
+      print('Playback state ${playbackState.value}');
     });
   }
 
   @override
   Future<void> play() async {
-    playbackState.add(playbackState.value.copyWith(
-      playing: true,
-      controls: [MediaControl.pause],
-    ));
+    // playbackState.add(playbackState.value.copyWith(
+    //   playing: true,
+    //   controls: [MediaControl.pause],
+    // ));
 
     await _player.play();
   }
 
   @override
   Future<void> pause() async {
-    playbackState.add(playbackState.value.copyWith(
-      playing: false,
-      controls: [MediaControl.play],
-    ));
+    // playbackState.add(playbackState.value.copyWith(
+    //   playing: false,
+    //   controls: [MediaControl.play],
+    // ));
 
     await _player.pause();
   }

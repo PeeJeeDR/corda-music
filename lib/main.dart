@@ -17,6 +17,8 @@ Future<void> main() async {
     config: const AudioServiceConfig(
       androidNotificationChannelId: 'com.corda.music.audio',
       androidNotificationChannelName: 'Music playback',
+      androidNotificationOngoing: true,
+      androidStopForegroundOnPause: true,
     ),
   );
 
@@ -27,16 +29,19 @@ Future<void> main() async {
   getIt.registerSingleton<LibraryService>(LibraryService());
   getIt.registerSingleton<MyAudioHandler>(MyAudioHandler());
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  final pageService = getIt.get<PageService>();
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final pageService = getIt.get<PageService>();
+    final libraryService = getIt.get<LibraryService>();
+
+    libraryService.getLibrary(true);
+
     return StreamBuilder(
       stream: pageService.selectedPage$,
       builder: (context, snap) {

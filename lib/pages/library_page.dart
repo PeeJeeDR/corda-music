@@ -11,7 +11,7 @@ class LibraryPage extends StatelessWidget {
     final libraryService = getIt.get<LibraryService>();
     final audioHandler = getIt.get<MyAudioHandler>();
 
-    libraryService.getLibrary();
+    libraryService.getLibrary(false);
 
     return StreamBuilder(
       stream: libraryService.library.stream,
