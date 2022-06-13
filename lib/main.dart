@@ -1,6 +1,8 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:corda_music/handlers/my_audio_handler.dart';
+import 'package:corda_music/handlers/youtube_handler.dart';
 import 'package:corda_music/services/counter_service.dart';
+import 'package:corda_music/services/library_service.dart';
 import 'package:corda_music/services/page_service.dart';
 import 'package:corda_music/services/search_service.dart';
 import 'package:corda_music/widgets/bottom_navigation.dart';
@@ -21,6 +23,9 @@ Future<void> main() async {
   getIt.registerSingleton<Counter>(Counter());
   getIt.registerSingleton<PageService>(PageService());
   getIt.registerSingleton<SearchService>(SearchService());
+  getIt.registerSingleton<YoutubeHandler>(YoutubeHandler());
+  getIt.registerSingleton<LibraryService>(LibraryService());
+  getIt.registerSingleton<MyAudioHandler>(MyAudioHandler());
 
   runApp(MyApp());
 }

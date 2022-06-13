@@ -1,6 +1,6 @@
 import 'package:corda_music/main.dart';
 import 'package:corda_music/services/search_service.dart';
-import 'package:corda_music/widgets/widget_tile.dart';
+import 'package:corda_music/widgets/music_tile.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatelessWidget {

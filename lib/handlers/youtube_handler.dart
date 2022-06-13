@@ -27,12 +27,14 @@ class YoutubeHandler {
 
     // Prepare file for stream.
     final fileName = video.title;
-    final file = File('$path/$fileName.mp3');
+    final file = File('$path/$fileName');
     final fileStream = file.openWrite();
 
     // Download stream to file.
     await stream.pipe(fileStream);
     await fileStream.flush();
     await fileStream.close();
+
+    print('File downloaded!');
   }
 }
